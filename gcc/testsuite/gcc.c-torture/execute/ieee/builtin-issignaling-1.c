@@ -1,9 +1,3 @@
-/* { dg-do run } */
-/* { dg-add-options ieee } */
-/* { dg-additional-options "-fsignaling-nans" } */
-/* Workaround for PR57484 on ia32: */
-/* { dg-additional-options "-msse2 -mfpmath=sse" { target { ia32 && sse2_runtime } } } */
-
 #if !defined(EXT) && !defined(TYPE)
 int
 f1 (void)
