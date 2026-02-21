@@ -30,8 +30,8 @@
 # in the spawn line.  If the pattern matches more than one spawn
 # command, it asks which one you want.
 
-if [ $# -lt 2 ] ; then
-    echo "usage: $0 [--debug|--debug-tui] pattern file.log [additional-args]"
+if [ $# -lt 1 ] ; then
+    echo "usage: $0 [--debug|--debug-tui] pattern [file.log] [additional-args]"
     echo
     echo "Finds the 'spawn' line matching PATTERN in FILE.LOG and executes"
     echo "the command with any arguments in ADDITIONAL-ARGS."
@@ -52,8 +52,8 @@ else
     debug_args=""
 fi
 pattern="$1"
-logf="$2"
-shift 2
+shift 1
+logf=$PWD/"gcc/testsuite/gcc/gcc.log"
 
 # Find the commands in LOGF that reference PATTERN.
 lines=$(grep -E "^spawn .*$pattern" $logf \
@@ -66,7 +66,8 @@ fi
 
 # Collect all the command lines into the COMMANDS array.
 old_IFS="$IFS"
-IFS=""
+IFS='
+'
 num_lines=0
 for line in $lines ; do
     num_lines=$[$num_lines + 1]
