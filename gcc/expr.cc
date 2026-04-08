@@ -3789,7 +3789,8 @@ use_regs (rtx *call_fusage, int regno, int nregs)
 {
   int i;
 
-  gcc_assert (regno + nregs <= FIRST_PSEUDO_REGISTER);
+  gcc_assert (regno + nregs <= FIRST_PSEUDO_REGISTER
+              || targetm.no_register_allocation);
 
   for (i = 0; i < nregs; i++)
     use_reg (call_fusage, regno_reg_rtx[regno + i]);

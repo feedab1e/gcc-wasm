@@ -4507,6 +4507,11 @@ return a different value if an argument size must be rounded to a larger
 value.
 @end deftypefn
 
+@deftypefn {Target Hook} void TARGET_MARK_ARG_REGNOS (bitmap @var{regs})
+Useful for TARGET_NO_REGISTER_ALLOCATION targets, define this to mark all
+ the pseudos that hold the current function arguments.
+@end deftypefn
+
 @defmac FUNCTION_ARG_REGNO_P (@var{regno})
 A C expression that is nonzero if @var{regno} is the number of a hard
 register in which function arguments are sometimes passed.  This does
