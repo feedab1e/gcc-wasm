@@ -4,6 +4,7 @@
 /* { dg-options "-std=iso9899:1999 -pedantic-errors -ffreestanding" } */
 /* { dg-require-effective-target ptr32plus } */
 /* { dg-additional-options "-DSIGNAL_SUPPRESS" { target { ! signal } } } */
+/* { dg-skip-if "wasi-libc doesn't support int width" { wasm*-*-* } } */
 
 /* The test is that there are no diagnostics, so just include the
    hosted version.  */

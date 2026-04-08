@@ -1,3 +1,5 @@
+/* { dg-skip-if "wasi-libc doesn't work well with analyzer" { wasm*-*-* } } */
+
 #include <errno.h>
 #include "analyzer-decls.h"
 

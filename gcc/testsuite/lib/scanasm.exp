@@ -148,6 +148,7 @@ proc hidden-scan-for { symbol } {
         coff     { return "$symbol\[,\d\]*hidden" }
         elf      { return "hidden\[ \t_\]*$symbol" }
         mach-o   { return "private_extern\[ \t_\]*_?$symbol" }
+        wasm     { return "(@sym(.import.data)? \\$$symbol|\\$$symbol \\\(@sym) (|weak |local )hidden" }
         default  { return "" }
     }
 
@@ -159,6 +160,7 @@ proc weak-scan-for { symbol } {
 
     switch $objformat {
         default  { return "weak\[^ \t\]*\[ \t\]_?$symbol" }
+        wasm     { return "(@sym(.import.data)? \\$$symbol|\\$$symbol \\\(@sym) weak" }
     }
 }
 

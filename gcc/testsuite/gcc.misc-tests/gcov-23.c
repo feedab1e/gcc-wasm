@@ -1,5 +1,6 @@
 /* { dg-options "-fcondition-coverage -ftest-coverage -O2" } */
 /* { dg-do compile } */
+/* { dg-skip-if "wasi-libc doesn't implement longjmp" { wasm*-*-* } } */
 
 #include <stdint.h>
 #include <limits.h>

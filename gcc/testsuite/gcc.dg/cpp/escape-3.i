@@ -6,6 +6,7 @@
 
 /* { dg-do compile } */
 /* { dg-options "-g1" } */
+/* { dg-skip-if "wasm doesn't support -g" { wasm*-*-* } } */
 
 int foo (int a, int b)
 {

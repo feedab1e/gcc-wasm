@@ -2,6 +2,7 @@
 /* { dg-do compile } */
 /* { dg-options "-std=c23 -ffreestanding" } */
 /* { dg-additional-options "-DSIGNAL_SUPPRESS" { target { ! signal } } } */
+/* { dg-skip-if "wasi-libc doesn't support int width" { wasm*-*-* } } */
 
 #include <stddef.h>
 #include <stdint.h>

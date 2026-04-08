@@ -2,6 +2,7 @@
 /* { dg-do compile } */
 /* { dg-options "-std=c11 -ffreestanding" } */
 /* { dg-additional-options "-DSIGNAL_SUPPRESS" { target { ! signal } } } */
+/* { dg-skip-if "wasi-libc doesn't support int width" { wasm*-*-* } } */
 
 #include <stddef.h>
 #define __STDC_WANT_IEC_60559_BFP_EXT__

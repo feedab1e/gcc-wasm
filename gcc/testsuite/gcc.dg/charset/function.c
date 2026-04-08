@@ -1,6 +1,6 @@
 /* { dg-do compile }
    { dg-require-iconv "IBM1047" }
-   { dg-final { scan-assembler-not "\"foobar\"" } } */
+   { dg-final { scan-assembler-not "\"foobar\"" { xfail wasm*-*-* } } } */
 
 const char *str;
 

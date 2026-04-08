@@ -59,9 +59,12 @@ proc check_for_all_options {language gcc_options compiler_pattern as_pattern ld_
     set as_options [list "additional_flags=-print-prog-name=as"]
     set as_prog [lindex [gcc_target_compile "" "" "none" $as_options] 0]
     if {![regexp -line -- " ${as_prog}(\\.exe)? .*$as_pattern" $gcc_output]} {
-
-	fail "$test (assembler options)"
-	return
+        # wasm does not use a standard assembler, its options are very different
+        # from gas and the like
+        if { ![istarget "wasm*-*-*"] } {
+	    fail "$test (assembler options)"
+	    return
+	}
     }
     # Match /collect2, /ld, or *-ld.
     if {![regexp -- "(/collect2|\[-/\]ld)(\\.exe)? .*$ld_pattern" $gcc_output]} {

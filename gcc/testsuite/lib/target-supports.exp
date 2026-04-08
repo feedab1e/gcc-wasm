@@ -351,6 +351,7 @@ proc check_weak_available { } {
 	a.out    { return 1 }
 	mach-o	 { return 1 }
 	som	 { return 1 }
+	wasm	 { return 1 }
 	unknown  { return -1 }
 	default  { return 0 }
     }
@@ -496,6 +497,10 @@ proc check_visibility_available { what_kind } {
 # be determined.
 
 proc check_alias_available { } {
+    if { [istarget wasm*-*-*] } {
+      return 0;
+    }
+
     global tool
 
     return [check_cached_effective_target alias_available {
@@ -651,7 +656,8 @@ proc check_effective_target_trampolines { } {
 	 || [istarget nvptx-*-*]
 	 || [istarget ft32-*-*]
 	 || [istarget pru-*-*]
-	 || [istarget bpf-*-*] } {
+	 || [istarget bpf-*-*]
+	 || [istarget wasm*-*-*] } {
 	return 0;
     }
     return 1
@@ -723,6 +729,9 @@ proc dg-effective-target-value { effective_target } {
 # Return 1 if signal.h is supported.
 
 proc check_effective_target_signal { } {
+    if { [istarget wasm*-*-*] } {
+      return 0
+    }
     if [target_info exists gcc,signal_suppress] {
       return 0
     }
@@ -993,7 +1002,7 @@ proc add_options_for_check_function_bodies { flags } {
 # Return 1 if indirect jumps are supported, 0 otherwise.
 
 proc check_effective_target_indirect_jumps {} {
-    if { [istarget nvptx-*-*] || [istarget bpf-*-*] } {
+    if { [istarget nvptx-*-*] || [istarget bpf-*-*] || [istarget wasm*-*-*] } {
 	return 0
     }
     return 1
@@ -1002,7 +1011,7 @@ proc check_effective_target_indirect_jumps {} {
 # Return 1 if nonlocal goto is supported, 0 otherwise.
 
 proc check_effective_target_nonlocal_goto {} {
-    if { [istarget nvptx-*-*] || [istarget bpf-*-*] } {
+    if { [istarget nvptx-*-*] || [istarget bpf-*-*] || [istarget wasm*-*-*] } {
 	return 0
     }
     return 1
@@ -1020,7 +1029,8 @@ proc check_effective_target_global_constructor {} {
 # Return 1 if taking label values is supported, 0 otherwise.
 
 proc check_effective_target_label_values {} {
-    if { [istarget nvptx-*-*] || [target_info exists gcc,no_label_values] } {
+    if { [istarget nvptx-*-*] || [istarget wasm*-*-*]
+         || [target_info exists gcc,no_label_values] } {
 	return 0
     }
 
@@ -1047,7 +1057,7 @@ proc check_effective_target_return_address {} {
 	return 0
     }
     # No notion of return address in eBPF.
-    if { [istarget bpf-*-*] } {
+    if { [istarget bpf-*-*] || [istarget wasm*-*-*] } {
 	return 0
     }
     # It could be supported on amdgcn, but isn't yet.
@@ -1062,7 +1072,7 @@ proc check_effective_target_return_address {} {
 # with K&R C function declarations.
 
 proc check_effective_target_untyped_assembly {} {
-    if { [istarget nvptx-*-*] } {
+    if { [istarget wasm*-*-*] || [istarget nvptx-*-*] } {
 	return 0
     }
     return 1
@@ -1277,6 +1287,9 @@ proc check_effective_target_fgnu_tm {} {
 # Return 1 if the target supports mmap, 0 otherwise.
 
 proc check_effective_target_mmap {} {
+    if [istarget wasm*-*-*] {
+      return 0;
+    }
     return [check_function_available "mmap"]
 }
 
@@ -4919,6 +4932,9 @@ proc check_effective_target_vect_intdouble_cvt { } {
 #Return 1 if we're supporting __int128 for target, 0 otherwise.
 
 proc check_effective_target_int128 { } {
+    if [istarget wasm*-*-*] {
+        return 0;
+    }
     return [check_no_compiler_messages int128 object {
 	int dummy[
     	#ifndef __SIZEOF_INT128__
@@ -12226,7 +12242,8 @@ proc check_effective_target_lto { } {
 	return 0
     }
     if { [istarget nvptx-*-*]
-	 || [istarget amdgcn-*-*] } {
+	 || [istarget amdgcn-*-*]
+	 || [istarget wasm*-*-*] } {
 	return 0;
     }
     return [check_no_compiler_messages lto object {
@@ -13035,6 +13052,7 @@ proc check_effective_target_fenv_exceptions_long_double {} {
 proc check_effective_target_exceptions {} {
     if { [istarget amdgcn*-*-*]
 	 || [istarget bpf-*-*]
+	 || [istarget wasm*-*-*]
 	 || [istarget nvptx-*-*] } {
 	return 0
     }
@@ -14050,7 +14068,7 @@ foreach N {df} {
 # Return 1 if this target uses an LLVM assembler and/or linker
 proc check_effective_target_llvm_binutils { } {
     return [check_cached_effective_target llvm_binutils {
-	      expr { [istarget amdgcn*-*-*]
+	      expr { [istarget amdgcn*-*-*] || [istarget wasm*-*-*]
 		     || [check_effective_target_offload_gcn] }}]
 }
 
@@ -14126,7 +14144,7 @@ proc check_effective_target_large_initializer { } {
 # in the assembly.
 
 proc check_effective_target_non_strict_prototype { } {
-    if { [istarget nvptx*-*-*] } {
+    if { [istarget wasm*-*-*] || [istarget nvptx*-*-*] } {
 	return 0
     }
 
@@ -14328,6 +14346,9 @@ proc check_effective_target_lra { } {
 # Return 1 if 'asm goto' with outputs is supported, 0 otherwise.
 
 proc check_effective_target_asm_goto_with_outputs { } {
+    if { [istarget wasm*-*-*] } {
+	    return 0
+    }
     if { [istarget nvptx-*-*] } {
 	return 1
     }

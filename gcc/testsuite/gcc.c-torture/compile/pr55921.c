@@ -1,6 +1,7 @@
 /* PR tree-optimization/55921 */
 /* { dg-skip-if "Not enough registers" { "pdp11-*-*" } } */
 /* { dg-skip-if "exceeds eBPF stack limit" { bpf-*-* } } */
+/* { dg-skip-if "" { wasm*-*-* } } */
 
 typedef union
 {

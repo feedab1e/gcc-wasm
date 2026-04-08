@@ -3,6 +3,7 @@
    attribute alloc_size that __builtin_object_size can make use of (or
    are treated as if they were for that purpose)..
    { dg-do compile }
+   { dg-skip-if "wasm uses wasi-libc" { wasm*-*-* } }
    { dg-additional-options "-O2 -fdump-tree-optimized" } */
 
 void sink (void*);

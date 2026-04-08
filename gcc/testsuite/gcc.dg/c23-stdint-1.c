@@ -1,6 +1,7 @@
 /* Test __STDC_VERSION_STDINT_H__ in C23.  */
 /* { dg-do preprocess } */
 /* { dg-options "-std=c23 -pedantic-errors -ffreestanding" } */
+/* { dg-skip-if "wasi-libc doesn't support c23" { wasm*-*-* } } */
 
 #include <stdint.h>
 

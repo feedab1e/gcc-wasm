@@ -3,7 +3,8 @@
    Prefetch using some invalid rw and locality values.  These must be
    compile-time constants.  */
 
-/* { dg-do run } */
+/* { dg-do run }
+   { dg-skip-if "wasm does not support prefetch" { wasm*-*-* } } */
 
 extern void exit (int);
 

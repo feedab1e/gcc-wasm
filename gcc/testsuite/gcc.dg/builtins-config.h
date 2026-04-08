@@ -12,6 +12,8 @@
 
 #if defined(__hppa) && defined(__hpux)
 /* PA HP-UX doesn't have the entire C99 runtime.  */
+#elif defined(__wasm32__)
+/* WebAssembly doesn't have the entire C99 runtime.  */
 #elif defined(__INTERIX)
 /* Interix6 doesn't have the entire C99 runtime.  */
 #elif defined(__AVR__)
