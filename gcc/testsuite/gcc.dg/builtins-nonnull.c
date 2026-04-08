@@ -1,6 +1,7 @@
 /* PR c/17308 - nonnull attribute not as useful as it could be
    PR c/78673 - sprintf missing attribute nonnull on destination argument
    { dg-do "compile" }
+   { dg-skip-if "wasm uses wasi-libc" { wasm*-*-* } }
    { dg-additional-options "-O2 -Wnonnull -ftrack-macro-expansion=0 -std=c99" } */
 
 #define va_list __builtin_va_list

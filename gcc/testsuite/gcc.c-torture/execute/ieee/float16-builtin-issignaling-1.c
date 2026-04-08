@@ -5,6 +5,7 @@
 /* { dg-add-options ieee } */
 /* { dg-require-effective-target float16_runtime } */
 /* { dg-additional-options "-fsignaling-nans" } */
+/* { dg-skip-if "WASM does not have signaling NaNs" { wasm*-*-* } } */
 /* Workaround for PR57484 on ia32: */
 /* { dg-additional-options "-msse2 -mfpmath=sse" { target { ia32 && sse2_runtime } } } */
 

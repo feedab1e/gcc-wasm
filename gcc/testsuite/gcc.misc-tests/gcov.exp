@@ -39,6 +39,10 @@ if ![info exists GCOV_UNDER_TEST] {
 # Initialize harness.
 dg-init
 
+if [istarget wasm*-*-*] then {
+  return 0;
+}
+
 # Delete old .gcda files.
 set files [glob -nocomplain gcov*.gcda]
 if { $files != "" } {

@@ -3,6 +3,7 @@
    conditions.  */
 /* { dg-do compile } */
 /* { dg-options "-std=iso9899:1999 -fhosted" } */
+/* { dg-additional-options "-DSIGNAL_SUPPRESS" { target { ! signal } } } */
 
 #include <stdint.h>
 
@@ -191,11 +192,13 @@
 #error "PTRDIFF_MAX not usable in #if or wrong value"
 #endif
 
+#ifndef SIGNAL_SUPPRESS
 #if SIG_ATOMIC_MIN != __SIG_ATOMIC_MIN__
 #error "SIG_ATOMIC_MIN not usable in #if or wrong value"
 #endif
 #if SIG_ATOMIC_MAX != __SIG_ATOMIC_MAX__
 #error "SIG_ATOMIC_MAX not usable in #if or wrong value"
+#endif
 #endif
 
 #if SIZE_MAX != __SIZE_MAX__

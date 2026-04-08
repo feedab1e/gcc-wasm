@@ -19,7 +19,7 @@ int foo (int b, int c, int d)
   return a;
 }
 
-/* { dg-final { scan-assembler-not "emutls_get_address.*emutls_get_address.*" { target { ! { "*-wrs-vxworks"  "*-*-darwin8"  "hppa*-*-hpux*" "i?86-*-mingw*" "x86_64-*-mingw*" visium-*-* nvptx-*-* } } } } } */
+/* { dg-final { scan-assembler-not "emutls_get_address.*emutls_get_address.*" { target { ! { "*-wrs-vxworks"  "*-*-darwin8"  "hppa*-*-hpux*" "i?86-*-mingw*" "x86_64-*-mingw*" visium-*-* nvptx-*-* wasm*-*-* } } } } } */
 /* { dg-final { scan-assembler-not "call\tL___emutls_get_address.stub.*call\tL___emutls_get_address.stub.*" { target "*-*-darwin8" } } } */
 /* { dg-final { scan-assembler-not "(b,l|bl) __emutls_get_address.*(b,l|bl) __emutls_get_address.*" { target "hppa*-*-hpux*" } } } */
 /* { dg-final { scan-assembler-not "tls_lookup.*tls_lookup.*" { target *-wrs-vxworks } } } */

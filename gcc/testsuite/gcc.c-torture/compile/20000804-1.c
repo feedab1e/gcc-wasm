@@ -7,6 +7,7 @@
 /* { dg-xfail-if "Inconsistent constraint on asm" { csky-*-* } { "-O0" } { "" } } */
 /* { dg-xfail-if "Inconsistent constraint on asm" { bpf-*-* } { "-O0" } { "" } } */
 /* { dg-xfail-if "" { h8300-*-* } } */
+/* { dg-skip-if "" { wasm*-*-* } } */
 /* { dg-require-stack-size "99*4+16" } */
 /* { dg-additional-options "-std=gnu89" } */
 

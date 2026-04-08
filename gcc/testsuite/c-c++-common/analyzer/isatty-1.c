@@ -1,5 +1,6 @@
 /* { dg-skip-if "" { powerpc*-*-aix* } } */
 /* { dg-skip-if "" { "avr-*-*" } } */
+/* { dg-skip-if "" { "wasm*-*-*" } } */
 
 #include <errno.h>
 #include "../../gcc.dg/analyzer/analyzer-decls.h"

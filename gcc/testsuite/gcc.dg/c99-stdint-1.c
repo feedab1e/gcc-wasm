@@ -11,6 +11,7 @@
 /* { dg-options "-std=iso9899:1999 -pedantic-errors -fhosted" } */
 /* { dg-require-effective-target ptr32plus } */
 /* { dg-additional-options "-DSIGNAL_SUPPRESS" { target { ! signal } } } */
+/* { dg-skip-if "wasi-libc doesn't support int width" { wasm*-*-* } } */
 
 #include <limits.h>
 #include <stdint.h>

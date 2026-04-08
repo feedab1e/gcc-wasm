@@ -1,6 +1,6 @@
 load_lib target-supports.exp
 
-if [istarget "nvptx-*-*"] {
+if { [istarget "nvptx-*-*"] || [istarget "wasm*-*-*"] } {
     # This test uses memcpy for block move in the same file as it
     # defines it.  The two decls are not the same, by design, and we
     # end up emitting a definition of memcpy, along with a .extern

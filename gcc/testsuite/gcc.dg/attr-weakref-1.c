@@ -8,6 +8,9 @@
 // { dg-skip-if "" { "hppa*-*-hpux*" "*-*-aix*" "nvptx-*-*" } }
 // { dg-skip-if PR119369 { amdgcn-*-* } }
 
+// WebAssembly does support undefined weak symbols, just not weakrefs
+/* { dg-skip-if "" { wasm*-*-* } } */
+
 // For kernel modules and static RTPs, the loader treats undefined weak
 // symbols in the same way as undefined strong symbols.  The test
 // therefore fails to load, so skip it.

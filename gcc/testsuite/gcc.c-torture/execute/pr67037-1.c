@@ -1,13 +1,21 @@
 /* { dg-additional-options "-std=gnu17" } */
-/* { dg-skip-if "" { wasm*-*-* } } */
-/* wasm doesn't play well with unprototyped fns when called with mismatching
-   number of args */
-long (*extfunc)();
-
+ 
+long __attribute__((noipa))
+sink1(void)
+{
+  return 0;
+}
+long __attribute__((noipa))
+sink2(void*)
+{
+  return 0;
+}
+ 
+ 
 static inline void lstrcpynW( short *d, const short *s, int n )
 {
     unsigned int count = n;
-
+ 
     while ((count > 1) && *s)
     {
         count--;
@@ -15,7 +23,7 @@ static inline void lstrcpynW( short *d, const short *s, int n )
     }
     if (count) *d = 0;
 }
-
+ 
 int __attribute__((noinline,noclone))
 badfunc(int u0, int u1, int u2, int u3,
   short *fsname, unsigned int fsname_len)
@@ -24,30 +32,25 @@ badfunc(int u0, int u1, int u2, int u3,
     char superblock[2048+3300];
     int ret = 0;
     short *p;
-
-    if (extfunc())
+ 
+    if (sink1())
         return 0;
-    p = (void *)extfunc();
+    p = (void *)sink1();
     if (p != 0)
         goto done;
-
-    extfunc(superblock);
-
+ 
+    sink2(superblock);
+ 
     lstrcpynW(fsname, ntfsW, fsname_len);
-
+ 
     ret = 1;
 done:
     return ret;
 }
-
-static long f()
-{
-    return 0;
-}
-
+ 
+ 
 int main()
 {
     short buf[6];
-    extfunc = f;
     return !badfunc(0, 0, 0, 0, buf, 6);
 }

@@ -1,5 +1,6 @@
 /* Tests for fd leak and errno handling of mktemp-family functions.  */
 /* { dg-additional-options "-Wno-analyzer-null-argument" } */
+/* { dg-skip-if "wasi-libc doesn't work well with analyzer" { wasm*-*-* } } */
 
 #include <stdlib.h>
 #include <fcntl.h>

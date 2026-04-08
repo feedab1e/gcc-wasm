@@ -1,4 +1,5 @@
 /* { dg-additional-options "-Wno-analyzer-null-argument" } */
+/* { dg-skip-if "wasi-libc doesn't work well with analyzer" { wasm*-*-* } } */
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,6 +1,7 @@
 /* { dg-options "-O2 -Wmissing-noreturn -fgnu89-inline" } */
 /* { dg-additional-options "-mno-mmx" { target { { i?86-*-* x86_64-*-* } && ia32 } } } */
 /* { dg-do compile } */
+/* { dg-skip-if "Unprototyped calls not supported" { wasm*-*-* } } */
 
 extern void abort (void);
 
