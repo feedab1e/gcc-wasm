@@ -1,0 +1,4 @@
+LIB2ADDEH=
+
+# Debug information is not yet supported
+LIBGCC2_DEBUG_CFLAGS = -g0
