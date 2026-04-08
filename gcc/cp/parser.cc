@@ -6174,6 +6174,8 @@ cp_parser_splice_specifier (cp_parser *parser, bool template_p = false,
   /* Get the reflected operand.  */
   expr = splice (expr);
 
+  tree expr_real = OVL_FIRST (MAYBE_BASELINK_FUNCTIONS (expr));
+
   /* If the next token is a <, it could be a splice-specialization-specifier.
      But we need to handle "[:r:] < 42" where the < doesn't start a template
      argument list.  [temp.names]/3: A < is interpreted as the delimiter of
@@ -6185,30 +6187,33 @@ cp_parser_splice_specifier (cp_parser *parser, bool template_p = false,
       /* As a courtesy to the user, if there is a < after a template
 	 name, parse the construct as an s-s-s and warn about the missing
 	 'template'; it can't be anything else.  */
-      && (template_p
-	  || typename_p
-	  || TREE_CODE (OVL_FIRST (expr)) == TEMPLATE_DECL))
+      && (template_p || typename_p || TREE_CODE (expr_real) == TEMPLATE_DECL))
     {
       /* For member access splice-specialization-specifier, try to wrap
 	 non-dependent splice for function template into a BASELINK so
 	 that cp_parser_template_id can handle it.  */
       if (object_type
-	  && DECL_FUNCTION_TEMPLATE_P (OVL_FIRST (expr))
+	  && DECL_FUNCTION_TEMPLATE_P (expr_real)
 	  && !dependent_type_p (object_type))
 	{
-	  tree scope = DECL_CONTEXT (OVL_FIRST (expr));
+	  tree scope = DECL_CONTEXT (expr_real);
 	  if (scope && CLASS_TYPE_P (scope))
 	    {
 	      tree access_path = lookup_base (object_type, scope, ba_unique,
 					      NULL, tf_warning_or_error);
 	      if (access_path == error_mark_node)
 		expr = error_mark_node;
+	      else if (BASELINK_P (expr))
+		expr  = build_baselink (access_path, BASELINK_BINFO (expr),
+					BASELINK_FUNCTIONS (expr),
+					BASELINK_OPTYPE (expr));
 	      else
 		expr
 		  = build_baselink (access_path, TYPE_BINFO (object_type),
 				    expr,
-				    IDENTIFIER_CONV_OP_P (OVL_NAME (expr))
-				    ? TREE_TYPE (OVL_NAME (expr)) : NULL_TREE);
+				    IDENTIFIER_CONV_OP_P (OVL_NAME (expr_real))
+				    ? TREE_TYPE (OVL_NAME (expr_real))
+				    : NULL_TREE);
 	    }
 	}
       /* Let cp_parser_template_id parse the template arguments.  */
@@ -6393,8 +6398,23 @@ cp_parser_splice_expression (cp_parser *parser, bool template_p,
 	   constexpr auto r = ^^S::i;
 	   int i = [: r :];
 	 we need to pass down 'S'.  */
-      tree ctx = DECL_P (t) ? DECL_CONTEXT (t) : NULL_TREE;
-      t = finish_id_expression (t, t, ctx, idk,
+      tree ctx, decl;
+      if (BASELINK_P (unresolved))
+	{
+	  /* If we have a BASELINK, grab all the data from there */
+	  decl = build_baselink (BASELINK_BINFO (unresolved),
+				 BASELINK_ACCESS_BINFO(unresolved), t,
+				 BASELINK_OPTYPE (unresolved));
+
+	  ctx = BINFO_TYPE (BASELINK_BINFO (unresolved));
+	}
+      else
+	{
+	  decl = t;
+	  ctx = DECL_P (t) ? DECL_CONTEXT (t) : NULL_TREE;
+	}
+
+      t = finish_id_expression (t, decl, ctx, idk,
 				/*integral_constant_expression_p=*/false,
 				/*allow_non_integral_constant_expr_p=*/true,
 				&parser->non_integral_constant_expression_p,
