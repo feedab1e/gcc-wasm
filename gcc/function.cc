@@ -3737,6 +3737,9 @@ assign_parms (tree fndecl)
       targetm.calls.function_arg_advance (all.args_so_far, data.arg);
     }
 
+  targetm.calls.function_incoming_arg (all.args_so_far,
+                                       function_arg_info::end_marker ());
+
   if (targetm.calls.split_complex_arg)
     assign_parms_unsplit_complex (&all, fnargs);
 

@@ -3565,7 +3565,8 @@ ix86_function_arg (cumulative_args_t cum_v, const function_arg_info &arg)
   HOST_WIDE_INT bytes, words;
   rtx reg;
 
-  if (!cum->caller && cfun->machine->func_type != TYPE_NORMAL)
+  if (!arg.end_marker_p () && !cum->caller
+      && cfun->machine->func_type != TYPE_NORMAL)
     {
       gcc_assert (arg.type != NULL_TREE);
       if (POINTER_TYPE_P (arg.type))
