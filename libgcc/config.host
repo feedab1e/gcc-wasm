@@ -1574,6 +1574,11 @@ nvptx-*)
 	tmake_file="$tmake_file nvptx/t-nvptx"
 	extra_parts="crt0.o"
 	;;
+wasm*-*-*)
+	tmake_file="$tmake_file wasm/t-wasm"
+	# unwind_header=config/no-unwind.h
+	# extra_parts="crt0.o"
+	;;
 *)
 	echo "*** Configuration ${host} not supported" 1>&2
 	exit 1

@@ -614,6 +614,10 @@ tic6x-*-*)
 	extra_headers="c6x_intrinsics.h"
 	extra_options="${extra_options} c6x/c6x-tables.opt"
 	;;
+wasm*-*-*)
+  cpu_type=wasm
+  extra_objs="wasm-cg.o wasm-asm.o wasm-passes.o"
+  ;;
 xtensa*-*-*)
 	extra_options="${extra_options} fused-madd.opt"
 	extra_objs="xtensa-dynconfig.o"
@@ -3677,6 +3681,9 @@ visium-*-elf*)
 	tm_file="elfos.h ${tm_file} visium/elf.h newlib-stdint.h"
 	tmake_file="visium/t-visium visium/t-crtstuff"
 	;;
+wasm*-*-*)
+  target_has_targetm_common=no
+  ;;
 xstormy16-*-elf)
 	# For historical reasons, the target files omit the 'x'.
 	tm_file="elfos.h newlib-stdint.h stormy16/stormy16.h"
