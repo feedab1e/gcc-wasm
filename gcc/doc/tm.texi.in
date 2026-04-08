@@ -3465,6 +3465,8 @@ required.
 
 @hook TARGET_FUNCTION_ARG_ROUND_BOUNDARY
 
+@hook TARGET_MARK_ARG_REGNOS
+
 @defmac FUNCTION_ARG_REGNO_P (@var{regno})
 A C expression that is nonzero if @var{regno} is the number of a hard
 register in which function arguments are sometimes passed.  This does

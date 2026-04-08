@@ -2954,9 +2954,11 @@ df_word_lr_bb_local_compute (unsigned int bb_index)
   rtx_insn *insn;
   df_ref def, use;
 
-  /* Ensure that artificial refs don't contain references to pseudos.  */
+  /* Ensure that artificial refs don't contain references to pseudos.
+     Do allow pseudos as args, though. */
   FOR_EACH_ARTIFICIAL_DEF (def, bb_index)
-    gcc_assert (DF_REF_REGNO (def) < FIRST_PSEUDO_REGISTER);
+    gcc_assert (DF_REF_REGNO (def) < FIRST_PSEUDO_REGISTER
+		|| bitmap_bit_p (df->entry_block_defs, DF_REF_REGNO (def)));
 
   FOR_EACH_ARTIFICIAL_USE (use, bb_index)
     gcc_assert (DF_REF_REGNO (use) < FIRST_PSEUDO_REGISTER);

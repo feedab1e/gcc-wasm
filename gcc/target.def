@@ -5378,6 +5378,13 @@ value.",
  unsigned int, (machine_mode mode, const_tree type),
  default_function_arg_round_boundary)
 
+DEFHOOK
+(mark_arg_regnos,
+ "Useful for TARGET_NO_REGISTER_ALLOCATION targets, define this to mark all\n\
+ the pseudos that hold the current function arguments.",
+ void, (bitmap regs),
+ NULL)
+
 /* Return the diagnostic message string if function without a prototype
    is not allowed for this 'val' argument; NULL otherwise. */
 DEFHOOK
